@@ -6,3 +6,15 @@ body {
 a {
   color: #00B7FF;
 }
+
+/* Navbar Styles */
+ul{
+  display: flex;
+}
+li{
+  margin-inline-end: 2rem;
+  list-style: none;
+}
+li a{
+  color: slateblue
+}

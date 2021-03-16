@@ -5,7 +5,7 @@ const cookieParser  = require('cookie-parser'),
       path          = require('path'),
       logger        = require('morgan')
 
-const indexRouter   = require('./routes/index')
+const indexRouter   = require('./controllers/index')
 
 
 // view engine setup
@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+// Add Controllers To Handle Routes
 app.use('/', indexRouter)
 
 // catch 404 and forward to error handler
