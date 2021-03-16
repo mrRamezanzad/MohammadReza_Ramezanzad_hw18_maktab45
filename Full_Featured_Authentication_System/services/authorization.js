@@ -1,9 +1,17 @@
-const registerUser = (userInfo) => {
-    console.log("im trying to register ya");
+const mongoose = require('mongoose'),
+      User     = require('../models/user')
+      bcrypt   = require('bcrypt')
+
+const registerUser = (userInfo, callback) => {
+
+    new User({
+        username: userInfo.username,
+        password: userInfo.password
+    }).save(callback)
 }
 
 const logUserOut = (userInfo) => {
-    console.log("im logging you out")
+
 }
 
 module.exports = {

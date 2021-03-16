@@ -1,12 +1,22 @@
 const cookieParser  = require('cookie-parser'),
       createError   = require('http-errors'),
+      mongoose      = require('mongoose'),
       express       = require('express'),
       app           = express(),
       path          = require('path'),
       logger        = require('morgan')
 
+// Importing Contorllers
 const indexRouter   = require('./controllers/index')
 
+// Connect To DataBase And Show Proper Messages
+let db = mongoose.connect("mongodb://localhost:27017/hw18",{
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}, (err) => {
+  if (err) return console.log(err)
+  console.log("================================ Successfully Connected To DataBase ================================")
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -18,7 +28,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
-// Add Controllers To Handle Routes
+// Set Up Controllers To Handle Routes
 app.use('/', indexRouter)
 
 // catch 404 and forward to error handler

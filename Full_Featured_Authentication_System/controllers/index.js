@@ -12,8 +12,24 @@ router.get('/register/', (req, res) => {
   res.render('register')
 })
 
+// Register The User Route
 router.post('/register/', (req, res) => {
-  registerUser({})
+
+  userPattern = ["username", "password" ]
+  inputKeys = Object.keys(req.body)  
+
+  // Check If All Needed Data Is Passed
+  isDataValid = userPattern.every((key) => {
+    return inputKeys.includes(key) && req.body[key].trim() !== ""
+  })
+
+  if(!isDataValid) return res.status(400).json({msg: "Invalid Data"})
+
+  registerUser(req.body, (err, user) => {
+    if (err) return res.status(500).send({msg: "There Was A Problem In Creating The New User"})
+    res.send({msg: "Created User Successfully"})
+  })
+
 })
 
 // Render Login Page
