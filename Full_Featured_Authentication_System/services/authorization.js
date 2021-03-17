@@ -5,8 +5,14 @@ const mongoose = require('mongoose'),
 const registerUser = (userInfo, callback) => {
 
     new User({
+        name    : userInfo.name,
+        id      : userInfo.id,
+        age     : userInfo.age,
+        city    : userInfo.city,
+        email   : userInfo.email,
         username: userInfo.username,
-        password: userInfo.password
+        password: userInfo.password,
+
     }).save(callback)
 }
 

@@ -18,3 +18,10 @@ li{
 li a{
   color: slateblue
 }
+
+form{
+  margin: 4rem auto;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}

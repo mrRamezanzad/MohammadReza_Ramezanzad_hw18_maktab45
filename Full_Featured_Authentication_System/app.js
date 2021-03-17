@@ -1,4 +1,5 @@
 const cookieParser  = require('cookie-parser'),
+      session       = require('express-session'),
       createError   = require('http-errors'),
       mongoose      = require('mongoose'),
       express       = require('express'),
@@ -11,8 +12,9 @@ const indexRouter   = require('./controllers/index')
 
 // Connect To DataBase And Show Proper Messages
 let db = mongoose.connect("mongodb://localhost:27017/hw18",{
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  newIndex            : true,
+  useNewUrlParser     : true,
+  useUnifiedTopology  : true,
 }, (err) => {
   if (err) return console.log(err)
   console.log("================================ Successfully Connected To DataBase ================================")
@@ -22,6 +24,15 @@ let db = mongoose.connect("mongodb://localhost:27017/hw18",{
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
+// Setting Session Up
+app.use(session({
+  secret: "Go Fuck Yourself",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: 600000
+  }
+}))
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
