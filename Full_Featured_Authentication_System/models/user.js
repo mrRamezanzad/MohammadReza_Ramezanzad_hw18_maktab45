@@ -47,7 +47,8 @@ const userSchema = new mongoose.Schema({
        
     },
     password: {
-        ...commonSchemaFields,
+        type      : String,
+        trim      : true,
         required  : true,
         
     },
@@ -55,9 +56,9 @@ const userSchema = new mongoose.Schema({
 })
 // ==========================Pre Save Hook==========================
 userSchema.pre("save", function (next) {
-    console.log("Im In Pre");
     user = this
 
+    // Encrypt Password And Save It To DataBase
     bcrypt.hash(user.password, 12, (err, hash) => {
         if(err) return next(new Error("there was a problem with password"))
         user.password = hash

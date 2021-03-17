@@ -1,14 +1,14 @@
-var express = require('express'),
+const express = require('express'),
     router  = express.Router(),
-    {registerUser, logUserIn, logUserOut} = require('../services/authorization')
+    {registerUser, logUserIn, logUserOut, isLoggedIn} = require('../services/authorization')
 
-/* GET home page. */
+// ============================Render Home Page============================
 router.get('/', function(req, res, next) {
   res.render('index', {msg: req.session.msg, err: req.session.err});
 });
 
 // ============================Render Register Page============================
-router.get('/register/', (req, res) => {
+router.get('/register/', isLoggedIn, (req, res) => {
   res.render('register', {msg: req.session.msg, err: req.session.err})
 })
 
@@ -18,7 +18,7 @@ router.post('/register/', (req, res) => {
   let signupPattern = ["username", "password"]
   let inputKeys = Object.keys(req.body)  
 
-  // Check If All Needed Data Is Passed
+  // Check If All The Required Data Is Passed
   let isDataValid =signupPattern.every((key) => {
     return inputKeys.includes(key) && req.body[key]
   })
@@ -26,7 +26,6 @@ router.post('/register/', (req, res) => {
   if(!isDataValid) return res.status(400).json({msg: "Invalid Data"})
 
   registerUser(req.body, (err, user) => {
-    // console.log(err);
     if (err) return res.status(500).send({msg: "There Was A Problem In Creating The New User"})
     // req.session.msg = {msg: "Created User Successfully"}
     res.redirect('/login/')
@@ -36,7 +35,7 @@ router.post('/register/', (req, res) => {
 })
 
 // ============================Render Login Page============================
-router.get('/login/', (req, res) => {
+router.get('/login/', isLoggedIn, (req, res) => {
   res.render('login', {msg: req.session.msg, err: req.session.err})
 })
 
@@ -56,19 +55,20 @@ router.post('/login/', (req, res) => {
       req.session.err = err
       return res.redirect('/login/')
     }
-    req.session.msg= "wellcome"
+    req.session.msg  = `Wellcome Back ${user.username}`
+    req.session.user = user
+
     return res.redirect('/dashboard/')
   })
 
 })
 // ============================Logout User============================
 router.get('/logout/', (req, res) => {
-  res.clearCookie()
-  res.redirect('/')
+  logUserOut(res)
 })
 
 // ============================Render Dashboard Page============================
-router.get('/dashboard/', (req, res) => {
+router.get('/dashboard/', isLoggedIn, (req, res) => {
   res.render('dashboard', {msg: req.session.msg, err: req.session}, (err, page) => {
     req.session.msg =""
     req.session.err =""
