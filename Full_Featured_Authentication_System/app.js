@@ -26,6 +26,7 @@ app.set('view engine', 'ejs')
 
 // Setting Session Up
 app.use(session({
+  key   : "sid",
   secret: "Go Fuck Yourself",
   resave: false,
   saveUninitialized: true,

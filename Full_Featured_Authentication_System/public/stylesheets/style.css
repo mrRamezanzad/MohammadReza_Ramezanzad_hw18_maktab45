@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: beige;
 }
 
 a {
@@ -16,7 +17,8 @@ li{
   list-style: none;
 }
 li a{
-  color: slateblue
+  text-decoration: none;
+  color: darkcyan
 }
 
 form{
@@ -24,4 +26,32 @@ form{
   width: 30%;
   display: flex;
   flex-direction: column;
+}
+
+label:not(:first-of-type){
+  margin-top: .5rem;
+}
+input{
+  border-radius: .3rem;
+  height: 1.3rem;
+}
+
+form button{
+  margin-top: 1rem;
+  height: 2rem;
+  cursor: pointer
+}
+
+/* medium media query */
+@media(max-width: 1000px){
+  form{
+    width: 50%;
+  }
+}
+
+/* smal media query */
+@media(max-width: 800px){
+  form{
+    width: 80%;
+  }
 }
