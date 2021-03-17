@@ -56,6 +56,7 @@ router.post('/login/', (req, res) => {
       req.session.err = err
       return res.redirect('/login/')
     }
+    req.session.msg= "wellcome"
     return res.redirect('/dashboard/')
   })
 
@@ -68,7 +69,11 @@ router.get('/logout/', (req, res) => {
 
 // ============================Render Dashboard Page============================
 router.get('/dashboard/', (req, res) => {
-  console.log(req.session.err, req.session.msg);
-  res.render('dashboard', {msg: req.session.msg, err: req.session})
+  res.render('dashboard', {msg: req.session.msg, err: req.session}, (err, page) => {
+    req.session.msg =""
+    req.session.err =""
+    res.send(page)
+  })
 })
+
 module.exports = router;
