@@ -1,6 +1,14 @@
+const { render } = require('ejs');
+
 const express = require('express'),
-    router  = express.Router(),
-    {registerUser, logUserIn, logUserOut, isLoggedIn} = require('../services/authorization')
+      router  = express.Router(),
+    {
+      registerUser,
+      logUserIn,
+      logUserOut,
+      isAuthorized,
+      isLoggedIn
+    } = require('../services/authorization')
 
 // ============================Render Home Page============================
 router.get('/', function(req, res, next) {
@@ -23,13 +31,12 @@ router.post('/register/', (req, res) => {
     return inputKeys.includes(key) && req.body[key]
   })
 
-  if(!isDataValid) return res.status(400).json({msg: "Invalid Data"})
+  if(!isDataValid) return res.status(400).render('register', {err: "Invalid Data"})
 
   registerUser(req.body, (err, user) => {
-    if (err) return res.status(500).send({msg: "There Was A Problem In Creating The New User"})
-    // req.session.msg = {msg: "Created User Successfully"}
+    if (err) return res.status(500).render('register', {err: "There Was A Problem In Creating The New User"})
+    req.session.msg = {msg: "Created User Successfully"}
     res.redirect('/login/')
-    // req.session.msg = {msg: undefined}
   })
 
 })
@@ -64,16 +71,29 @@ router.post('/login/', (req, res) => {
 })
 // ============================Logout User============================
 router.get('/logout/', (req, res) => {
-  logUserOut(res)
+  logUserOut(req, res)
 })
 
 // ============================Render Dashboard Page============================
-router.get('/dashboard/', isLoggedIn, (req, res) => {
-  res.render('dashboard', {msg: req.session.msg, err: req.session}, (err, page) => {
-    req.session.msg =""
-    req.session.err =""
-    res.send(page)
+router.get('/dashboard/', isAuthorized, (req, res) => {
+  res.render('dashboard--profile', {msg: req.session.msg, err: req.session}, (err, page) => {
+    flush(req, res, page)
   })
 })
+
+
+// ============================Render Dashboard Edit Page============================
+router.get('/dashboard/edit/', isLoggedIn, (req, res) => {
+  res.render('dashboard--edit', {msg: req.session.msg, err: req.session}, (err, page) => {
+    flush(req, res, page)
+  })
+})
+
+// Clear The Flash Messages
+function flush(req, res, page) {
+  req.session.msg =""
+  req.session.err =""
+  res.send(page)
+}
 
 module.exports = router;

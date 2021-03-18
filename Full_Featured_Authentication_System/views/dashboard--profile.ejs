@@ -1,0 +1,17 @@
+<%- include("./partials/header", {title: "Edit Profile"}) %>
+<%- include("./partials/navbar", {page: "dashboard"}) %> 
+<%- include("./partials/alert", {msg, err}) %> 
+
+<h1>Profile</h1>
+
+<div class="container">
+    <div class="row">
+        
+        <label for="username">Username:</label>
+        <input type="text" name="username" placeholder="<%= locals.user.username %> " disabled>
+
+        <button id="change-pass-button">Change Password</button>
+        <button id="change-pass-button">Delete Account</button>
+
+    </div>
+</div>

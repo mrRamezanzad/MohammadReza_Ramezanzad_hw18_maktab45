@@ -29,30 +29,27 @@ const logUserIn = (userInfo, callback) => {
             callback(err, user)
 
         })
-        
     })
 }
 
-const logUserOut = (res) => {
+const logUserOut = (req, res) => {
     res.clearCookie('sid')
     res.redirect('/login/')
 }
 
 const isLoggedIn = (req, res, next) =>{
-    if(req.session.user && req.path.includes("dashboard")) return next()
-    if(req.session.user && !req.path.includes("dashboard")) return res.redirect('/dashboard/')
-    res.clearCookie()
-    if(!req.session.user && req.path.includes("dashboard")) return res.redirect('/login/')
+    if(req.session.user && req.cookies.sid) return res.redirect("/dashboard/")
     next()
-
-
-    
-    // return res.redirect("/login/")
+}
+const isAuthorized = (req, res, next) =>{
+    if(req.session.user && req.cookies.sid) return next()
+    res.redirect("/login/")
 }
 
 module.exports = {
     registerUser,
     logUserIn,
     logUserOut,
+    isAuthorized,
     isLoggedIn
 }

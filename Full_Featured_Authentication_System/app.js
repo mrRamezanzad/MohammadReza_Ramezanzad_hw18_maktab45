@@ -40,6 +40,13 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+// Clear Cookie If There Is No Session On Server
+app.use((req, res, next) => {
+  res.locals.user = req.session.user
+  if(!req.session.user && req.cookies.sid) res.clearCookie("sid")
+  next()
+})
+
 // Set Up Controllers To Handle Routes
 app.use('/', indexRouter)
 
