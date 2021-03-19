@@ -2,13 +2,15 @@ const { render } = require('ejs');
 
 const express = require('express'),
       router  = express.Router(),
-    {
-      registerUser,
-      logUserIn,
-      logUserOut,
-      isAuthorized,
-      isLoggedIn
-    } = require('../services/authorization')
+      {
+        logUserIn,
+        logUserOut,
+        isAuthorized,
+        checkLogin
+      } = require('../services/authorization'),
+      {
+        registerUser,
+      } = require('../services/user')
 
 // ============================Render Home Page============================
 router.get('/', function(req, res, next) {
@@ -16,33 +18,12 @@ router.get('/', function(req, res, next) {
 });
 
 // ============================Render Register Page============================
-router.get('/register/', isLoggedIn, (req, res) => {
+router.get('/register/', checkLogin, (req, res) => {
   res.render('register', {msg: req.session.msg, err: req.session.err})
 })
 
-// ============================Register The User Route============================
-router.post('/register/', (req, res) => {
-
-  let signupPattern = ["username", "password"]
-  let inputKeys = Object.keys(req.body)  
-
-  // Check If All The Required Data Is Passed
-  let isDataValid =signupPattern.every((key) => {
-    return inputKeys.includes(key) && req.body[key]
-  })
-
-  if(!isDataValid) return res.status(400).render('register', {err: "Invalid Data"})
-
-  registerUser(req.body, (err, user) => {
-    if (err) return res.status(500).render('register', {err: "There Was A Problem In Creating The New User"})
-    req.session.msg = {msg: "Created User Successfully"}
-    res.redirect('/login/')
-  })
-
-})
-
 // ============================Render Login Page============================
-router.get('/login/', isLoggedIn, (req, res) => {
+router.get('/login/', checkLogin, (req, res) => {
   res.render('login', {msg: req.session.msg, err: req.session.err})
 })
 
@@ -83,7 +64,7 @@ router.get('/dashboard/', isAuthorized, (req, res) => {
 
 
 // ============================Render Dashboard Edit Page============================
-router.get('/dashboard/edit/', isLoggedIn, (req, res) => {
+router.get('/dashboard/edit/', isAuthorized, (req, res) => {
   res.render('dashboard--edit', {msg: req.session.msg, err: req.session}, (err, page) => {
     flush(req, res, page)
   })

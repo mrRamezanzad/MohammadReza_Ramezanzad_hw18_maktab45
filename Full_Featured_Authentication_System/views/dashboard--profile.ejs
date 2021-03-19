@@ -10,8 +10,15 @@
         <label for="username">Username:</label>
         <input type="text" name="username" placeholder="<%= locals.user.username %> " disabled>
 
-        <button id="change-pass-button">Change Password</button>
-        <button id="change-pass-button">Delete Account</button>
-
+        <a href="/dashboard/edit">
+            <button id="change-pass">Edit Account</button>
+        </a>
+        
+        <button data-user-id="<%= user._id %>" id="delete-user">Delete Account</button>
     </div>
 </div>
+
+
+<!-- Import Scripts -->
+<%- include("./partials/scripts.js") %>
+<script src="/javascripts/user.js"></script>

@@ -5,10 +5,13 @@ const cookieParser  = require('cookie-parser'),
       express       = require('express'),
       app           = express(),
       path          = require('path'),
-      logger        = require('morgan')
+      logger        = require('morgan'),
+      colors        = require('colors')
 
 // Importing Contorllers
-const indexRouter   = require('./controllers/index')
+const indexRouter   = require('./controllers/index'),
+      userRouter    = require('./controllers/user')
+
 
 // Connect To DataBase And Show Proper Messages
 let db = mongoose.connect("mongodb://localhost:27017/hw18",{
@@ -17,7 +20,7 @@ let db = mongoose.connect("mongodb://localhost:27017/hw18",{
   useUnifiedTopology  : true,
 }, (err) => {
   if (err) return console.log(err)
-  console.log("================================ Successfully Connected To DataBase ================================")
+  console.log(`================================ Successfully Connected To DataBase ================================`.magenta)
 })
 
 // view engine setup
@@ -49,6 +52,7 @@ app.use((req, res, next) => {
 
 // Set Up Controllers To Handle Routes
 app.use('/', indexRouter)
+app.use('/user/', userRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

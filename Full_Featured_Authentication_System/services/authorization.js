@@ -2,29 +2,22 @@ const mongoose = require('mongoose'),
       User     = require('../models/user')
       bcrypt   = require('bcrypt')
 
-const registerUser = (userInfo, callback) => {
-    new User({
-        // name    : userInfo.name,
-        // id      : userInfo.id,
-        // age     : userInfo.age,
-        // city    : userInfo.city,
-        // email   : userInfo.email,
-        username: userInfo.username,
-        password: userInfo.password,
-
-    }).save(callback)
+module.exports = {
+    logUserIn,
+    logUserOut,
+    checkLogin,
+    isAuthorized
 }
 
-const logUserIn = (userInfo, callback) => {
+function logUserIn (userInfo, callback) {
     
-    console.log("im hereeee", userInfo);
     User.findOne({username: userInfo.username}, (err, user) => {
         if(err) return callback(err, user)
         if(!user) return callback({msg: "no user found"}, user)
         
         bcrypt.compare(userInfo.password, user.password, (err, isMatch) => {
             
-            if(err) return callback({msg: "password doesn't match"}, user)
+            if(err) return callback(err, user)
             if(!isMatch) return callback({msg:"wrong password"}, user)
             callback(err, user)
 
@@ -32,24 +25,22 @@ const logUserIn = (userInfo, callback) => {
     })
 }
 
-const logUserOut = (req, res) => {
+function logUserOut (req, res) {
     res.clearCookie('sid')
     res.redirect('/login/')
 }
 
-const isLoggedIn = (req, res, next) =>{
+function checkLogin (req, res, next) {
+
+    /* If Request Hass Session And Cookie Then Go To Dashboard 
+       Otherwise Go To Login Or Register Pages*/
     if(req.session.user && req.cookies.sid) return res.redirect("/dashboard/")
     next()
 }
-const isAuthorized = (req, res, next) =>{
+
+function isAuthorized (req, res, next){
+    
+    // If Request Hass Session And Cookie Then Allow It
     if(req.session.user && req.cookies.sid) return next()
     res.redirect("/login/")
-}
-
-module.exports = {
-    registerUser,
-    logUserIn,
-    logUserOut,
-    isAuthorized,
-    isLoggedIn
 }

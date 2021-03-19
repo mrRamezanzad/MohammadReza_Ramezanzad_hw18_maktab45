@@ -2,4 +2,22 @@
 <%- include("./partials/navbar", {page: "dashboard"}) %> 
 <%- include("./partials/alert", {msg, err}) %> 
 
-<h1>Edit info</h1>
+<h1 class="bg-teal">Edit info</h1>
+
+<div class="container">
+    <div class="row ">
+        
+        <label for="username">Username:</label>
+        <input type="text" name="username" value="<%= locals.user.username %>">
+        
+        <label for="password">password:</label>
+        <input type="password" name="password" placeholder="Enter Your New Password">
+        
+        <button data-user-id="<%= locals.user._id %> " id="edit-user">Save Changes</button>
+        
+    </div>
+</div>
+
+<!-- Importing Scripts -->
+<%- include("./partials/scripts.js") %>
+<script src="/javascripts/user.js"></script>

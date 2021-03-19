@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
     username: {
         ...commonSchemaFields,
         required  : true,
-        // unique    : true,
+        unique    : true,
        
     },
     password: {
