@@ -1,6 +1,6 @@
-<%- include("./partials/header", {title: "Edit Profile"}) %>
-<%- include("./partials/navbar", {page: "dashboard"}) %> 
-<%- include("./partials/alert", {msg, err}) %> 
+<%- include("./partials/__header", {title: "Edit Profile"}) %>
+<%- include("./partials/__navbar", {page: "dashboard"}) %> 
+<%- include("./partials/__alert", {msg, err}) %> 
 
 <h1>Profile</h1>
 
@@ -20,5 +20,5 @@
 
 
 <!-- Import Scripts -->
-<%- include("./partials/scripts.js") %>
+<%- include("./partials/__scripts") %>
 <script src="/javascripts/user.js"></script>

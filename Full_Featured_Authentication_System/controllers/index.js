@@ -14,17 +14,17 @@ const express = require('express'),
 
 // ============================Render Home Page============================
 router.get('/', function(req, res, next) {
-  res.render('index', {msg: req.session.msg, err: req.session.err});
+  res.render('index', {msg: req.flash('message'), err: req.flash('error')});
 });
 
 // ============================Render Register Page============================
 router.get('/register/', checkLogin, (req, res) => {
-  res.render('register', {msg: req.session.msg, err: req.session.err})
+  res.render('register', {msg: req.flash('message'), err: req.flash('error')})
 })
 
 // ============================Render Login Page============================
 router.get('/login/', checkLogin, (req, res) => {
-  res.render('login', {msg: req.session.msg, err: req.session.err})
+  res.render('login', {msg: req.flash('message'), err: req.flash('error')})
 })
 
 // ============================Render Login Page============================
@@ -34,21 +34,21 @@ router.post('/login/', (req, res) => {
   let isDataValid = loginPattern.every( input => inputKeys.includes(input) && req.body[input].trim() !== "" )
 
   if(!isDataValid) {
-    req.session.err = "Login Inputs Can't Be Empty"
+    req.flash('error', "Login Inputs Can't Be Empty")
     return res.redirect('/login/')
   }
 
   logUserIn(req.body, (err, user) => {
     if(err){
-      req.session.err = err
+      req.flash('error', err)
       return res.redirect('/login/')
     }
-    req.session.msg  = `Wellcome Back ${user.username}`
+    req.flash('message', `Wellcome Back ${user.username}`) 
     req.session.user = user
-
+    
     return res.redirect('/dashboard/')
   })
-
+  
 })
 // ============================Logout User============================
 router.get('/logout/', (req, res) => {
@@ -57,24 +57,15 @@ router.get('/logout/', (req, res) => {
 
 // ============================Render Dashboard Page============================
 router.get('/dashboard/', isAuthorized, (req, res) => {
-  res.render('dashboard--profile', {msg: req.session.msg, err: req.session}, (err, page) => {
-    flush(req, res, page)
-  })
+  res.render('dashboard--profile', {msg: req.flash('message'), err: req.flash('error')})
 })
 
 
 // ============================Render Dashboard Edit Page============================
 router.get('/dashboard/edit/', isAuthorized, (req, res) => {
-  res.render('dashboard--edit', {msg: req.session.msg, err: req.session}, (err, page) => {
-    flush(req, res, page)
-  })
+  res.render('dashboard--edit', {msg: req.flash('message'), err: req.flash('error')})
 })
 
-// Clear The Flash Messages
-function flush(req, res, page) {
-  req.session.msg =""
-  req.session.err =""
-  res.send(page)
-}
+
 
 module.exports = router;

@@ -1,13 +1,22 @@
-<%- include("./partials/header", {title: "Login Page"}) %>
-<%- include("./partials/navbar", {page: "login"}) %> 
-<%- include("./partials/alert", {msg, err}) %>
+<%- include("./partials/__header", {title: "Login Page"}) %>
+<%- include("./partials/__navbar", {page: "login"}) %> 
+<%- include("./partials/__alert", {msg, err}) %>
 
-<form action="/login" method="POST">
-  <label for="username">Username:</label>
-  <input type="text" name="username">
+<div class="container pt-5">
+  
+  <form class="row justify-content-center mt-5 " action="/login" method="POST">
+    <div class="col-4 row justify-content-center p-5 ">
 
-  <label for="password">Password:</label>
-  <input type="password" name="password">
+      <label for="username">Username:</label>
+      <input class="form-control" type="text" name="username">
+      
+      <label for="password">Password:</label>
+      <input class="form-control" type="password" name="password">
+      
+      <button class="mt-2 btn btn-primary" type="submit">Login</button>
+    </div>
+  </form>
+</div>
 
-  <button type="submit">Login</button>
-</form>
+<%- include("./partials/__scripts") %>
+<%- include("./partials/__footer") %>

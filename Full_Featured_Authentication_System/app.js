@@ -6,7 +6,8 @@ const cookieParser  = require('cookie-parser'),
       app           = express(),
       path          = require('path'),
       logger        = require('morgan'),
-      colors        = require('colors')
+      colors        = require('colors'),
+      flash         = require('connect-flash')
 
 // Importing Contorllers
 const indexRouter   = require('./controllers/index'),
@@ -42,6 +43,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(flash())
 
 // Clear Cookie If There Is No Session On Server
 app.use((req, res, next) => {

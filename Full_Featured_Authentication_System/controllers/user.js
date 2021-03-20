@@ -21,13 +21,13 @@ router.post('/user/', (req, res) => {
     return inputKeys.includes(key) && req.body[key]
   })
   
-    if(!isDataValid) return res.status(400).render('register', {err: "Invalid Data"})
+    if(!isDataValid) return res.status(400).render('register', {err: req.flash('error', "Invalid Data")})
     
     registerUser(req.body, (err, user) => {
       
-      if (err) return res.status(500).render('register', {err: "there was a problem registering"})
+      if (err) return res.status(500).render('register', {err: req.flash('error', "There Was A Problem Registering")})
       
-      req.session.msg = "Created User Successfully"
+      req.flash('message', "Created User Successfully")
       res.redirect('/login/')
     })
   })

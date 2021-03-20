@@ -1,8 +1,8 @@
-<%- include("./partials/header") %>
-<%- include("./partials/navbar") %>
-<%- include("./partials/alert", {msg, err}) %>
+<%- include("./partials/__header") %>
+<%- include("./partials/__navbar", {page: "home"}) %>
+<%- include("./partials/__alert", {msg, err}) %>
 
 <h1>Home Page</h1>
 
-</body>
-</html>
+<%- include("./partials/__scripts") %>
+<%- include("./partials/__footer") %>

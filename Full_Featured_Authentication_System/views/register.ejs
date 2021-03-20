@@ -1,8 +1,7 @@
-<%- include("./partials/header") %>
-<%- include("./partials/navbar") %> 
-<%- include("./partials/alert") %> 
+<%- include("./partials/__header", {title: "register"}) %>
+<%- include("./partials/__navbar", {page: "register"}) %> 
+<%- include("./partials/__alert", {msg, err}) %> 
 
-<form action="/user" method="POST">
 <!--   
   <label for="name">Full Name:</label>
   <input type="text" name="name">
@@ -20,11 +19,21 @@
   <input type="email" name="email"> 
 -->
 
-  <label for="username">Username:</label>
-  <input type="text" name="username">
+<div class="container pt-5">
+  
+  <form class="row justify-content-center mt-5 " action="/user" method="POST">
+    <div class="col-4 row justify-content-center p-5 ">
 
-  <label for="password">Password:</label>
-  <input type="password" name="password">
+      <label for="username">Username:</label>
+      <input class="form-control" type="text" name="username">
+      
+      <label for="password">Password:</label>
+      <input class="form-control" type="password" name="password">
+      
+      <button class="mt-2 btn btn-primary" type="submit">Register</button>
+    </div>
+  </form>
+</div>
 
-  <button type="submit">Register</button>
-</form>
+<%- include("./partials/__scripts") %>
+<%- include("./partials/__footer") %>
