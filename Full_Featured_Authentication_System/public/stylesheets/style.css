@@ -33,9 +33,16 @@ nav .nav-item .nav-link {
   display: inline-block;
 }
 
+.alert {
+  z-index: 1000;
+}
+.alert-box {
+  top: 4.3rem;
+}
+
 label {
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
 }
 label:not(:first-of-type) {
-  margin-top: 0.4rem;
+  margin-top: 1rem;
 }

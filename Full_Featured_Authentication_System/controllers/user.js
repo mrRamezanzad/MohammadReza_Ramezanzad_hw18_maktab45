@@ -5,7 +5,8 @@ const express   = require('express'),
       {
         registerUser,
         removeUser, 
-        updateUser
+        updateUser,
+        comparePassword
       } = require('../services/user')
       
 module.exports = router
@@ -49,16 +50,29 @@ router.delete('/user/:id/', (req, res) => {
     })
   })
   
-// ============================Edit Account Route============================
-router.put('/user/:id/', (req, res) => {
-
-  // Sanitize The Updated User Information
-  let updatedUserInfo = {
-    username: req.body.username
-  }
-  
-  updateUser(req.params.id, updatedUserInfo, (err, newUser) => {
-    if (err) return res.status(500).json({err: "تغییرات نا موفق بود"})
-    res.json({msg: "اکانت شما با موفقیت آپدیت شد"})
+  // ============================Edit Account Route============================
+  router.put('/user/:id/', (req, res) => {
+    
+    // Sanitize The Updated User Information
+    let updatedUserInfo = {
+      username: req.body.username
+    }
+    
+    updateUser(req.params.id, updatedUserInfo, (err, newUser) => {
+      if (err) return res.status(500).json({err: "تغییرات نا موفق بود"})
+      res.json({msg: "اکانت شما با موفقیت آپدیت شد"})
+    })
   })
-})
+  
+  // ============================ Change Password Route============================
+  router.patch('/user/password/', (req, res) => {
+    comparePassword(req.session.user._id, req.body.currentPassword, (err, isMatch) => {
+      console.log(err, isMatch);
+      if (err) return res.status(500).send("خطایی در سمت سرور رخ داده است")
+      if (!isMatch) return res.status(401).send("پسورد وارد شده معتبر نمی باشد")
+      res.send("پسورد با موفقیت تغییر کرد، لطفاً مجدداً وارد شوید")
+
+    })
+
+
+  })

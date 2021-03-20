@@ -9,7 +9,7 @@ const express = require('express'),
         checkLogin
       } = require('../services/authorization'),
       {
-        registerUser,
+        getUserInformation
       } = require('../services/user')
 
 // ============================Render Home Page============================
@@ -57,13 +57,21 @@ router.get('/logout/', (req, res) => {
 
 // ============================Render Dashboard Page============================
 router.get('/dashboard/', isAuthorized, (req, res) => {
-  res.render('dashboard--profile', {msg: req.flash('message'), err: req.flash('error')})
+    getUserInformation(req.session.user._id, (err, user) => {
+      if(err) return req.flash("error", err)
+      res.locals.user = user
+      res.render('dashboard--profile', {msg: req.flash('message'), err: req.flash('error')})
+    })
 })
 
 
 // ============================Render Dashboard Edit Page============================
 router.get('/dashboard/edit/', isAuthorized, (req, res) => {
-  res.render('dashboard--edit', {msg: req.flash('message'), err: req.flash('error')})
+  getUserInformation(req.session.user._id, (err, user) => {
+    if(err) return req.flash("error", err)
+    res.locals.user = user
+    res.render('dashboard--edit', {msg: req.flash('message'), err: req.flash('error')})
+  })
 })
 
 

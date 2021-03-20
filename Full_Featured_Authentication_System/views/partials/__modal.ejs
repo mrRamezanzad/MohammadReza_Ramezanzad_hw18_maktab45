@@ -7,7 +7,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form class="row text-end justify-content-center" action="/user/confirmation/">
+            <div class="row text-end justify-content-center">
                 <div class="col-8">
                     <label class="form-label" for="currentPassword">رمز فعلی</label>
                     <input class="form-control" type="password" name="currentPassword"  placeholder="Current Password">
@@ -22,11 +22,11 @@
                 </div>
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
-                <button type="submit" class="btn btn-primary">درخواست تایید</button>
-            </div>
-        </form>
-      </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+              <button class="btn btn-primary" data-change-password="<%= userId %>">درخواست تایید</button>
+          </div>
+        </div>
     </div>
   </div>

@@ -30,13 +30,13 @@ saveEditedUserButton.on("click", function (e) {
         url: `/user/${$(this).attr('data-user-id')}`,
         data: editedUserInfo,
         success: function (response) {
-            console.log("Success >>>>>", response);
+            console.log("Success >>>>>", response.msg);
             alert(response.msg)
             location.replace("/dashboard")
         },
-        error: function (err) {
+        error: function (err) {''
             console.log("Error >>>>>", err);
-            alert(err)
+            alert(err.responseJSON.err)
         }
     });
 })
@@ -47,3 +47,35 @@ function getEditedUserInfo () {
     }
 }
     
+// Send Request To Change Password On Click
+$("[data-change-password]").on("click", function (e) {
+    if(
+        $("input[name='currentPassword']").val().trim() === "" || 
+        $("input[name='newPassword']").val().trim() === "" ||
+        $("input[name='newPasswordConfirmation']").val().trim() === ""  
+    )
+        return alert("پر کردن تمامی فیلد ها الزامی است")
+
+    if($("input[name='newPassword']").val() !== $("input[name='newPasswordConfirmation']").val())
+        return alert("تکرار رمز عبور همخوانی ندارد")
+    const updatePasswordInformation = {
+        currentPassword: $("input[name='currentPassword']").val(),
+        newPassword    : $("input[name='newPassword']").val()
+    }
+    sendPasswordChangeRequest(updatePasswordInformation)
+})
+
+function sendPasswordChangeRequest (updatePasswordInformation) {
+    console.log("i will send request to change password", updatePasswordInformation);
+    $.ajax({
+        type: "PATCH",
+        url: "/user/password/",
+        data: updatePasswordInformation,
+        success: function (response) {
+            console.log("Success >>>", response)
+        },
+        err: function (err) {
+            console.log("Error >>>", err)
+        }
+    })
+}
