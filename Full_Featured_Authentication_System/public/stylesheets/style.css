@@ -32,3 +32,10 @@ nav .nav-item span.bi {
 nav .nav-item .nav-link {
   display: inline-block;
 }
+
+label {
+  margin-bottom: 0.3rem;
+}
+label:not(:first-of-type) {
+  margin-top: 0.4rem;
+}

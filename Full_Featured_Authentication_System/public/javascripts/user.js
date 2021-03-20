@@ -1,4 +1,4 @@
-const deleteUserButton     = $("#delete-user"),
+const deleteUserButton     = $("[role=delete-user]"),
       saveEditedUserButton = $("#edit-user")
 
 // Send User Delete Request When Delete Button Clicked
@@ -10,7 +10,7 @@ deleteUserButton.on("click", function (e) {
         url: `/user/${userId}`,
         success: function (response) {
             console.log("Success>>>>>", response);
-            alert("We Will Miss You")
+            alert("به امید دیدار مجدد")
             location.replace("/")
             
         }, 
@@ -43,7 +43,7 @@ saveEditedUserButton.on("click", function (e) {
 
 function getEditedUserInfo () {
     return {
-        username: $("[name='username']").val(),
-        password: $("[name='password']").val()    }
+        username: $("[name='username']").val()
+    }
 }
     

@@ -1,0 +1,6 @@
+label {
+  margin-bottom: 0.4rem;
+}
+label:not(:first-of-type) {
+  margin-top: 1rem;
+}

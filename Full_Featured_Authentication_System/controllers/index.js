@@ -27,23 +27,23 @@ router.get('/login/', checkLogin, (req, res) => {
   res.render('login', {msg: req.flash('message'), err: req.flash('error')})
 })
 
-// ============================Render Login Page============================
+// ============================Logging User In============================
 router.post('/login/', (req, res) => {
   let loginPattern = ["username", "password"]
   let inputKeys    = Object.keys(req.body)
   let isDataValid = loginPattern.every( input => inputKeys.includes(input) && req.body[input].trim() !== "" )
 
   if(!isDataValid) {
-    req.flash('error', "Login Inputs Can't Be Empty")
+    req.flash('error', "لطفا فرم ورود را کامل پر کنید")
     return res.redirect('/login/')
   }
 
-  logUserIn(req.body, (err, user) => {
+  logUserIn(req.body, (err, user) => { 
     if(err){
       req.flash('error', err)
       return res.redirect('/login/')
     }
-    req.flash('message', `Wellcome Back ${user.username}`) 
+    req.flash('message', `${user.username} خوش آمدی`) 
     req.session.user = user
     
     return res.redirect('/dashboard/')

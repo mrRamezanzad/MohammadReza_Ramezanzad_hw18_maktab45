@@ -13,12 +13,12 @@ function logUserIn (userInfo, callback) {
     
     User.findOne({username: userInfo.username}, (err, user) => {
         if(err) return callback(err, user)
-        if(!user) return callback({msg: "no user found"}, user)
+        if(!user) return callback("کاربری با این مشخصات وجود ندارد", user)
         
         bcrypt.compare(userInfo.password, user.password, (err, isMatch) => {
             
             if(err) return callback(err, user)
-            if(!isMatch) return callback({msg:"wrong password"}, user)
+            if(!isMatch) return callback("لطفاً رمز ورودی خود را چک کنید", user)
             callback(err, user)
 
         })

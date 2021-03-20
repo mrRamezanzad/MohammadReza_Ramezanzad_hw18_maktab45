@@ -21,13 +21,18 @@ router.post('/user/', (req, res) => {
     return inputKeys.includes(key) && req.body[key]
   })
   
-    if(!isDataValid) return res.status(400).render('register', {err: req.flash('error', "Invalid Data")})
-    
+    if(!isDataValid) {
+      req.flash('error', "مقادیر ورودی را چک کنید")
+      return res.status(400).redirect('register')
+    }
+
     registerUser(req.body, (err, user) => {
+      if (err) {
+        req.flash('error', "مشکلی در ثبت نام شما وجود دارد")
+        return res.status(500).redirect('/register/')
+      }
       
-      if (err) return res.status(500).render('register', {err: req.flash('error', "There Was A Problem Registering")})
-      
-      req.flash('message', "Created User Successfully")
+      req.flash('message', "اکانت شما با موفقیت ساخته شد")
       res.redirect('/login/')
     })
   })
@@ -38,9 +43,9 @@ router.delete('/user/:id/', (req, res) => {
   
   const userId = req.params.id
   removeUser(userId, (isDeleted) => {
-      if (isDeleted !== true) return res.status(500).json({err: "There Was A Problem Deleting Your Account"})
+      if (isDeleted !== true) return res.status(500).json({err: "در این لحظه امکان حذف اکانت وجود ندارد"})
       res.clearCookie('sid')
-      res.status(200).json({msg: "We will Miss You"})
+      res.status(200).json({msg: "به امید دیدار"})  
     })
   })
   
@@ -53,7 +58,7 @@ router.put('/user/:id/', (req, res) => {
   }
   
   updateUser(req.params.id, updatedUserInfo, (err, newUser) => {
-    if (err) return res.status(500).json({err: "There Was A Problem During Update"})
-    res.json({msg: "Updated User Successfully"})
+    if (err) return res.status(500).json({err: "تغییرات نا موفق بود"})
+    res.json({msg: "اکانت شما با موفقیت آپدیت شد"})
   })
 })
