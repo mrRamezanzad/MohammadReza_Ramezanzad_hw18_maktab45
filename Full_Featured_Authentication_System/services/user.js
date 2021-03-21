@@ -5,7 +5,8 @@ module.exports = {
     registerUser,
     removeUser,
     updateUser,
-    comparePassword
+    comparePassword,
+    updatePassword
 }
 
 function getUserInformation(userId, callback) {
@@ -36,9 +37,9 @@ function removeUser (userId, callback) {
 }
 
 function updateUser (userId, updatedUserInfo, callback) {
-    User.updateOne({_id: userId}, updatedUserInfo, (err, updatedUser) => {  
+    User.findOneAndUpdate({_id: userId}, {$set: updatedUserInfo}, (err, updatedUser) => {  
+        if (err) return callback(err, updatedUser)
         callback(err, updatedUser)
-
     })
 }
 
@@ -50,4 +51,14 @@ function comparePassword (userId, enteredPassword, callback) {
             callback(err, isMatch)
         })
     })
+}
+
+function updatePassword (userId, newPassword, callback) {
+    User.findByIdAndUpdate({_id: userId},{password: newPassword}, {new: true}, function (err, user) {
+        if (err) return callback(err, false)
+        user.password = newPassword
+        user.save()
+        callback(err, true)
+    })
+
 }

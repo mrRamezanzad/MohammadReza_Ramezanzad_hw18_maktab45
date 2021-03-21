@@ -66,16 +66,18 @@ $("[data-change-password]").on("click", function (e) {
 })
 
 function sendPasswordChangeRequest (updatePasswordInformation) {
-    console.log("i will send request to change password", updatePasswordInformation);
     $.ajax({
         type: "PATCH",
         url: "/user/password/",
         data: updatePasswordInformation,
         success: function (response) {
             console.log("Success >>>", response)
+            alert(response)
+            location.reload()
         },
-        err: function (err) {
+        error: function (err) {
             console.log("Error >>>", err)
+            alert(err.responseText)
         }
     })
 }

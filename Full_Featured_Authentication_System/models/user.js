@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema({
 // ==========================Pre Save Hook==========================
 userSchema.pre("save", function (next) {
     user = this
-
+    
     // Encrypt Password And Save It To DataBase
     bcrypt.hash(user.password, 12, (err, hash) => {
         if(err) return next(new Error("there was a problem with password"))
@@ -66,8 +66,6 @@ userSchema.pre("save", function (next) {
         
     })
 })
-
-
 
 const User = mongoose.model("User", userSchema)
 module.exports = User

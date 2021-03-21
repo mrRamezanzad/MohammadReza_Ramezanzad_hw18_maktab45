@@ -6,7 +6,8 @@ const express   = require('express'),
         registerUser,
         removeUser, 
         updateUser,
-        comparePassword
+        comparePassword,
+        updatePassword
       } = require('../services/user')
       
 module.exports = router
@@ -66,11 +67,20 @@ router.delete('/user/:id/', (req, res) => {
   
   // ============================ Change Password Route============================
   router.patch('/user/password/', (req, res) => {
-    comparePassword(req.session.user._id, req.body.currentPassword, (err, isMatch) => {
-      console.log(err, isMatch);
+    const userId          = req.session.user._id,
+          currentPassword = req.body.currentPassword,
+          newPassword     = req.body.newPassword
+
+    comparePassword(userId, currentPassword, (err, isMatch) => {
       if (err) return res.status(500).send("خطایی در سمت سرور رخ داده است")
       if (!isMatch) return res.status(401).send("پسورد وارد شده معتبر نمی باشد")
-      res.send("پسورد با موفقیت تغییر کرد، لطفاً مجدداً وارد شوید")
+
+      updatePassword(userId, newPassword, (err, isChanged) => {
+        if (err) return res.status(500).send("خطایی در سمت سرور رخ داده است")
+        if (!isChanged) return res.status(500).send("رمز شما تغییر نکرد")
+        res.clearCookie("sid")
+        res.send("پسورد با موفقیت تغییر کرد، لطفاً مجدداً وارد شوید")
+      })
 
     })
 
