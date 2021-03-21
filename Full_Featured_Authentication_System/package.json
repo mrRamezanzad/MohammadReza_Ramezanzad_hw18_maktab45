@@ -4,8 +4,8 @@
   "private": true,
   "author": "mrRamezanzad",
   "scripts": {
-    "start": "node ./bin/www",
-    "css": "tailwindcss build ./src/style.css ./src/navbar.css -o ./public/stylesheets/style.css"
+    "start": "nodemon ./bin/www",
+    "css": "sass --watch ./src/:./public/stylesheets/"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -20,5 +20,6 @@
     "mongoose": "^5.12.0",
     "morgan": "~1.9.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+  }
 }

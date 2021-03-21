@@ -34,6 +34,8 @@ nav .nav-item .nav-link {
 }
 
 .alert {
+  position: fixed;
+  width: 100%;
   z-index: 1000;
 }
 .alert-box {
@@ -46,3 +48,5 @@ label {
 label:not(:first-of-type) {
   margin-top: 1rem;
 }
+
+/*# sourceMappingURL=style.css.map */

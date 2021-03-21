@@ -1,4 +1,6 @@
 .alert {
+    position: fixed;
+    width:100%;
     z-index: 1000;
     &-box {
         top: 4.3rem;
