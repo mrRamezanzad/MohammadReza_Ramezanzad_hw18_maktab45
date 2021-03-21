@@ -54,7 +54,7 @@ function comparePassword (userId, enteredPassword, callback) {
 }
 
 function updatePassword (userId, newPassword, callback) {
-    User.findByIdAndUpdate({_id: userId},{password: newPassword}, {new: true}, function (err, user) {
+    User.findById({_id: userId},function (err, user) {
         if (err) return callback(err, false)
         user.password = newPassword
         user.save()
